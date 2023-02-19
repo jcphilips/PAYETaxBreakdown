@@ -44,7 +44,7 @@ class TaxProfile:
 			contributes_epf (bool): True if user contributes a portion of their salary to EPF
 		"""
 		self.salary = salary
-		self.tax = self.tax(self.salary)
+		self.tax = self.tax()
 		self.contributes_epf = contributes_epf
 		self.epf = self.calculate_epf_contribution()
 		self.take_home = self.deduct()
@@ -108,7 +108,6 @@ Salary before deductions:   {self.salary:,.2f}
 Tax:                        {self.tax:,.2f}
 EPF Contribution:           {self.epf:,.2f}
 Take home:                  {self.take_home:,.2f} ({self.take_home_pc:.1%})
-
 		'''
 		return profile
 
