@@ -88,6 +88,15 @@ class TaxProfile:
 	def deduct(self):
 		return self.salary - self.tax - self.epf
 
+	def __str__(self):
+		profile = f'''
+Salary before deductions: {self.salary:,.2f}
+Tax: {self.tax:,.2f}
+EPF Contribution: {self.epf:,.2f}
+Take home: {self.take_home:.2f} ({self.take_home_pc:.1f}%)
+
+		'''
+		return profile
 
 salary = -math.inf
 while salary < 0:
