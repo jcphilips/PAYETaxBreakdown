@@ -31,7 +31,7 @@ Exceeding 308,333								-			36% - 73,500
 import math
 
 class TaxProfile:
-	def __init__(self, salary, contributesEPF):
+	def __init__(self, salary, contributes_epf):
 		"""
 		_summary_
 
@@ -40,9 +40,10 @@ class TaxProfile:
 		"""
 		self.salary = salary
 		self.tax = self.tax(self.salary)
-		self.contributesEPF = contributesEPF
-		self.epf = self.calculateEPFContribution()
-		print(self.epf)
+		self.contributes_epf = contributes_epf
+		self.epf = self.calculate_epf_contribution()
+		self.take_home = self.deduct()
+		self.take_home_pc = self.take_home/self.salary * 100.0
    
 	def tax(self, salary):
 		"""
@@ -70,8 +71,8 @@ class TaxProfile:
 			return salary * 0.36 - 73500
 		return 0
 
-	def calculateEPFContribution(self):
-		if self.salary > 0 and self.contributesEPF:
+	def calculate_epf_contribution(self):
+		if self.salary > 0 and self.contributes_epf:
 			base = -math.inf
 			while base < 0:
 				try:
@@ -84,21 +85,25 @@ class TaxProfile:
 			return base * 0.08
 		return 0
 
+	def deduct(self):
+		return self.salary - self.tax - self.epf
+
+
 salary = -math.inf
-while True:
-	while salary < 0:
-		try:
-			salary = float(input("Enter salary: "))
-		except TypeError:
-			print("Must enter floating point values only!: ")
-			salary = -math.inf
-	epfContributor = ""
-	while epfContributor == "":
-		epfContributor = input("Do you contribute to EPF? (Y/N): ").lower()
-		if epfContributor == "y":
-			user = TaxProfile(salary, True)
-		elif epfContributor == "n":
-			user = TaxProfile(salary, False)
-		else:
-			print("Invalid input!")
-			epfContributor = ""
+while salary < 0:
+	try:
+		salary = float(input("Enter salary: "))
+	except TypeError:
+		print("Must enter floating point values only!: ")
+		salary = -math.inf
+epfContributor = ""
+while epfContributor == "":
+	epfContributor = input("Do you contribute to EPF? (Y/N): ").lower()
+	if epfContributor == "y":
+		user = TaxProfile(salary, True)
+	elif epfContributor == "n":
+		user = TaxProfile(salary, False)
+	else:
+		print("Invalid input!")
+		epfContributor = ""
+  
