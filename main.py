@@ -48,7 +48,10 @@ class TaxProfile:
 		self.contributes_epf = contributes_epf
 		self.epf = self.calculate_epf_contribution()
 		self.take_home = self.deduct()
-		self.take_home_pc = self.take_home/self.salary
+		if self.salary > 0:
+			self.take_home_pc = self.take_home/self.salary
+		else:
+			self.take_home_pc = 1.00
    
 	def tax(self):
 		"""
@@ -88,8 +91,9 @@ class TaxProfile:
 					if base > self.salary:
 						print("Base salary cannot be greater than quoted salary!")
 						base = -math.inf
-				except TypeError:
+				except ValueError:
 					print("Must enter floating point values only!")
+					base = -math.inf
 			return base * 0.08
 		return 0
 
@@ -115,9 +119,11 @@ salary = -math.inf
 while salary < 0:
 	try:
 		salary = float(input("Enter salary: "))
-	except TypeError:
+	except ValueError:
 		print("Must enter floating point values only!: ")
 		salary = -math.inf
+	if salary < 0:
+		print("Cannot enter a value less than 0. Try again.")
 epfContributor = ""
 while epfContributor == "":
 	epfContributor = input("Do you contribute to EPF? (Y/N): ").lower()
