@@ -33,10 +33,11 @@ import math
 class TaxProfile:
 	def __init__(self, salary, contributes_epf):
 		"""
-		_summary_
+		Initialises instance variables and calls member functions to calculate financial details.
 
 		Args:
 			salary (int): Monthly income of user
+			contributes_epf (bool): True if user contributes a portion of their salary to EPF
 		"""
 		self.salary = salary
 		self.tax = self.tax(self.salary)
@@ -45,33 +46,36 @@ class TaxProfile:
 		self.take_home = self.deduct()
 		self.take_home_pc = self.take_home/self.salary
    
-	def tax(self, salary):
+	def tax(self):
 		"""
-		  _summary_
-
-		Args:
-			salary (_type_): _description_
+		Calculates tax based on salary income after bonuses and allowances.
 
 		Returns:
-			_type_: _description_
+			int: Total PAYE tax applicable
 		"""
-		if salary < 100000:
+		if self.salary < 100000:
 			return 0
-		if salary < 141667:
-			return salary * 0.06 - 6000
-		if salary < 183333:
-			return salary * 0.12 - 14500
-		if salary < 225000:
-			return salary * 0.18 - 25500
-		if salary < 226667:
-			return salary * 0.24 - 39000
-		if salary < 308333:
-			return salary * 0.30 - 55000
-		if salary > 308333:
-			return salary * 0.36 - 73500
+		if self.salary < 141667:
+			return self.salary * 0.06 - 6000
+		if self.salary < 183333:
+			return self.salary * 0.12 - 14500
+		if self.salary < 225000:
+			return self.salary * 0.18 - 25500
+		if self.salary < 226667:
+			return self.salary * 0.24 - 39000
+		if self.salary < 308333:
+			return self.salary * 0.30 - 55000
+		if self.salary > 308333:
+			return self.salary * 0.36 - 73500
 		return 0
 
 	def calculate_epf_contribution(self):
+		"""
+		Calculates user's contribution to EPF.
+
+		Returns:
+			int: User's EPF contribution
+		"""	
 		if self.salary > 0 and self.contributes_epf:
 			base = -math.inf
 			while base < 0:
@@ -86,6 +90,12 @@ class TaxProfile:
 		return 0
 
 	def deduct(self):
+		"""
+		Calculates salary after deductions.
+
+		Returns:
+			int: Salary after deductions
+		"""    
 		return self.salary - self.tax - self.epf
 
 	def __str__(self):
