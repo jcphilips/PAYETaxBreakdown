@@ -31,7 +31,7 @@ Exceeding 308,333								-			36% - 73,500
 import math
 
 class TaxProfile:
-	def __init__(self, salary, contributesEPF=True):
+	def __init__(self, salary, contributesEPF):
 		"""
 		_summary_
 
@@ -83,3 +83,22 @@ class TaxProfile:
 					print("Must enter floating point values only!")
 			return base * 0.08
 		return 0
+
+salary = -math.inf
+while True:
+	while salary < 0:
+		try:
+			salary = float(input("Enter salary: "))
+		except TypeError:
+			print("Must enter floating point values only!: ")
+			salary = -math.inf
+	epfContributor = ""
+	while epfContributor == "":
+		epfContributor = input("Do you contribute to EPF? (Y/N): ").lower()
+		if epfContributor == "y":
+			user = TaxProfile(salary, True)
+		elif epfContributor == "n":
+			user = TaxProfile(salary, False)
+		else:
+			print("Invalid input!")
+			epfContributor = ""
