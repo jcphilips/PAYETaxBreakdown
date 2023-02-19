@@ -27,3 +27,59 @@ Exceeding 225,000 but not exceeding 266,667		-			24% - 39,000
 Exceeding 266,667 but not exceeding 308,333		-			30% - 55,000
 Exceeding 308,333								-			36% - 73,500
 """
+
+import math
+
+class TaxProfile:
+	def __init__(self, salary, contributesEPF=True):
+		"""
+		_summary_
+
+		Args:
+			salary (int): Monthly income of user
+		"""
+		self.salary = salary
+		self.tax = self.tax(self.salary)
+		self.contributesEPF = contributesEPF
+		self.epf = self.calculateEPFContribution()
+		print(self.epf)
+   
+	def tax(self, salary):
+		"""
+		  _summary_
+
+		Args:
+			salary (_type_): _description_
+
+		Returns:
+			_type_: _description_
+		"""
+		if salary < 100000:
+			return 0
+		if salary < 141667:
+			return salary * 0.06 - 6000
+		if salary < 183333:
+			return salary * 0.12 - 14500
+		if salary < 225000:
+			return salary * 0.18 - 25500
+		if salary < 226667:
+			return salary * 0.24 - 39000
+		if salary < 308333:
+			return salary * 0.30 - 55000
+		if salary > 308333:
+			return salary * 0.36 - 73500
+		return 0
+
+	def calculateEPFContribution(self):
+		if self.salary > 0 and self.contributesEPF:
+			base = -math.inf
+			while base < 0:
+				try:
+					base = float(input("Enter base salary (Salary not inclusive of bonuses or allowances): "))
+					if base > self.salary:
+						print("Base salary cannot be greater than quoted salary!")
+						base = -math.inf
+				except TypeError:
+					print("Must enter floating point values only!")
+			return base * 0.08
+		return 0
