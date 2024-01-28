@@ -125,10 +125,10 @@ Take home:                  {self.take_home:,.2f} ({self.take_home_pc:.1%})
         self.dollarSalary = dollarSalary
         exchange_rate = 310.0
         self.salary = currencyConversion(dollarSalary, exchange_rate)
-        while self.take_home != self.salary - self.epf - self.calculateTax():
+        while self.take_home != self.salary - self.epf - self.tax:
             exchange_rate += 1
             self.salary = currencyConversion(dollarSalary, exchange_rate) 
-            print(self.salary)
+            self.tax = self.calculateTax()
 
 salary = -math.inf
 dollarSalary = -math.inf
