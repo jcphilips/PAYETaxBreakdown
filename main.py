@@ -151,8 +151,8 @@ while epfContributor == "":
     else:
         print("Invalid input!")
         epfContributor = ""
-print(sys.argv[1])
-if sys.argv[1] == "r":
-    user.reverse(salary, dollarSalary)
+if len(sys.argv) > 1:
+    if sys.argv[1] == "r":
+        user.reverse(salary, dollarSalary)
 print(user)
  
