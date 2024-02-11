@@ -69,12 +69,35 @@ class TaxProfile:
             return self.salary * 0.12 - 14500
         if self.salary < 225000:
             return self.salary * 0.18 - 25500
-        if self.salary < 226667:
+        if self.salary < 266667:
             return self.salary * 0.24 - 39000
         if self.salary < 308333:
             return self.salary * 0.30 - 55000
         if self.salary > 308333:
             return self.salary * 0.36 - 73500
+        return 0
+
+    def reverseTax(self):
+        """
+        Calculates tax based on salary income after bonuses and allowances.
+
+        Returns:
+            int: Total PAYE tax applicable
+        """
+        if self.salary + self.epf < 100000:
+            return (0, 0)
+        if self.salary + self.epf < 139166.04:
+            return (6, 6000)
+        if self.salary + self.epf < 175833.04:
+            return (12, 14500)
+        if self.salary + self.epf < 210000:
+            return (18, 25500)
+        if self.salary + self.epf < 241666.9:
+            return (24, 39000)
+        if self.salary + self.epf < 270833.1:
+            return (30, 55000)
+        if self.salary + self.epf > 270833.1:
+            return (36, 73500)
         return 0
 
     def calculate_epf_contribution(self):
@@ -116,26 +139,17 @@ Take home:                  {self.take_home:,.2f} ({self.take_home_pc:.1%})
         '''
         return profile
 
-    def reverse(self, salary, dollarSalary):
-        def currencyConversion(amount, exchange_rate):
-            return amount * exchange_rate
-        
-        self.take_home = salary
-        print(self.take_home)
-        self.dollarSalary = dollarSalary
-        exchange_rate = 310.0
-        self.salary = currencyConversion(dollarSalary, exchange_rate)
-        while self.take_home != self.salary - self.epf - self.tax:
-            exchange_rate += 1
-            self.salary = currencyConversion(dollarSalary, exchange_rate) 
-            self.tax = self.calculateTax()
+    def reverse(self, salary):
+        self.take_home = self.salary
+        (tax_percentage, relief) = self.reverseTax() 
+        self.salary = (self.take_home + self.epf - relief) / (1 - tax_percentage * .01)
+        self.tax = self.calculateTax()
+        self.take_home_pc = self.take_home/self.salary
 
 salary = -math.inf
-dollarSalary = -math.inf
 while salary < 0:
     try:
         salary = float(input("Enter salary: "))
-        dollarSalary = float(input("Enter dollar salary: "))
     except ValueError:
         print("Must enter floating point values only!: ")
         salary = -math.inf
@@ -153,6 +167,6 @@ while epfContributor == "":
         epfContributor = ""
 if len(sys.argv) > 1:
     if sys.argv[1] == "r":
-        user.reverse(salary, dollarSalary)
+        user.reverse(salary)
 print(user)
  
