@@ -2,12 +2,27 @@ from TaxProfile import TaxProfile
 import math
 import sys
 
+r = False
+if len(sys.argv) > 1:
+    if sys.argv[1] == "r":
+        print("Calculating salary before deductions.")
+        r = True
+    else:
+        print("Invalid argument entered.")
+        print("Enter no arguments to calulcate salary after deductions.")
+        print("Enter 'r' to calculate salary before deductions.")
+        print("i.e. python3 main.py r")
+        sys.exit(1)
+
 while True:
     user = None
     salary = -math.inf
     while salary < 0:
         try:
-            salary = float(input("Enter salary: "))
+            if r:
+                salary = float(input("Enter take home salary: "))
+            else:
+                salary = float(input("Enter salary: "))
         except ValueError:
             print("Must enter floating point values only!: ")
             salary = -math.inf
@@ -23,9 +38,8 @@ while True:
         else:
             print("Invalid input!")
             epfContributor = ""
-    if len(sys.argv) > 1:
-        if sys.argv[1] == "r":
-            user.reverse(salary)
+    if r:
+        user.reverse(salary)
     print(user)
 
     choice = ""
