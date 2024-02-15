@@ -32,10 +32,9 @@ TODO: Create UI
 TODO: Allow creation of multiple tax profiles and save to a databse.
 """
 
-import math
 
 class TaxProfile:
-    def __init__(self, salary, contributes_epf):
+    def __init__(self, salary, EPF):
         """
         Initialises instance variables and calls member functions to calculate financial details.
 
@@ -45,8 +44,7 @@ class TaxProfile:
         """
         self.salary = salary
         self.tax = self.calculateTax()
-        self.contributes_epf = contributes_epf
-        self.epf = self.calculate_epf_contribution()
+        self.epf = EPF.epf
         self.take_home = self.deduct()
         if self.salary > 0:
             self.take_home_pc = self.take_home/self.salary
@@ -99,26 +97,6 @@ class TaxProfile:
             return (36, 73500)
         return 0
 
-    def calculate_epf_contribution(self):
-        """
-        Calculates user's contribution to EPF.
-
-        Returns:
-            int: User's EPF contribution
-        """ 
-        if self.salary > 0 and self.contributes_epf:
-            base = -math.inf
-            while base < 0:
-                try:
-                    base = float(input("Enter base salary (Salary not inclusive of bonuses or allowances): "))
-                    if base > self.salary:
-                        print("Base salary cannot be greater than quoted salary!")
-                        base = -math.inf
-                except ValueError:
-                    print("Must enter floating point values only!")
-                    base = -math.inf
-            return base * 0.08
-        return 0
 
     def deduct(self):
         """
@@ -138,9 +116,10 @@ Take home:                  {self.take_home:,.2f} ({self.take_home_pc:.1%})
         '''
         return profile
 
-    def reverse(self, salary):
+    def reverse(self):
         self.take_home = self.salary
         (tax_percentage, relief) = self.reverseTax() 
         self.salary = (self.take_home + self.epf - relief) / (1 - tax_percentage * .01)
         self.tax = self.calculateTax()
         self.take_home_pc = self.take_home/self.salary
+
