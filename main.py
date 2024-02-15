@@ -1,12 +1,13 @@
+from EPF import EPF
 from TaxProfile import TaxProfile
 import math
 import sys
 
-r = False
+reverse = False
 if len(sys.argv) > 1:
     if sys.argv[1] == "r":
         print("Calculating salary before deductions.")
-        r = True
+        reverse = True
     else:
         print("Invalid argument entered.")
         print("Enter no arguments to calulcate salary after deductions.")
@@ -14,12 +15,14 @@ if len(sys.argv) > 1:
         print("i.e. python3 main.py r")
         sys.exit(1)
 
+epfContributor = ""
 while True:
     user = None
     salary = -math.inf
+
     while salary < 0:
         try:
-            if r:
+            if reverse:
                 salary = float(input("Enter take home salary: "))
             else:
                 salary = float(input("Enter salary: "))
@@ -28,18 +31,27 @@ while True:
             salary = -math.inf
         if salary < 0:
             print("Cannot enter a value less than 0. Try again.")
-    epfContributor = ""
+
+    if epfContributor != "":
+        userInput = input("Do you want to continue with the same EPF? (Y/N): ").lower()
+        if userInput == 'n':
+            epfContributor = ""
+        if userInput == 'y':
+            user = TaxProfile(salary, epfContributor)
+
     while epfContributor == "":
-        epfContributor = input("Do you contribute to EPF? (Y/N): ").lower()
-        if epfContributor == "y":
-            user = TaxProfile(salary, True)
-        elif epfContributor == "n":
-            user = TaxProfile(salary, False)
+        contributes_epf = input("Do you contribute to EPF? (Y/N): ").lower()
+        if contributes_epf == "y":
+            epfContributor = EPF(salary, True)
+        elif contributes_epf == "n":
+            epfContributor = EPF(salary, False)
         else:
             print("Invalid input!")
             epfContributor = ""
-    if r:
-        user.reverse(salary)
+
+    user = TaxProfile(salary, epfContributor)
+    if reverse:
+        user.reverse()
     print(user)
 
     choice = ""
@@ -49,7 +61,7 @@ while True:
             print("Thank you for using this program!\nExitting.")
             sys.exit()
         elif choice == 'y':
-            print()
+            print("")
             continue
         else:
             choice = ""
