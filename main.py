@@ -58,7 +58,7 @@ while True:
     while choice == "":
         choice = input("Do you want to continue? (Y/N): ").lower()
         if choice == 'n':
-            print("Thank you for using this program!\nExitting.")
+            print("Thank you for using this program!\Exiting.")
             sys.exit()
         elif choice == 'y':
             print("")
