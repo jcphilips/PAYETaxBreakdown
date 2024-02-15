@@ -24,3 +24,7 @@ Tax based on monthly profits from employment are calculated using the formula:
 - Exceeding 225,000 **but not** exceeding 266,667		-	24% - 39,000
 - Exceeding 266,667 **but not** exceeding 308,333		-	30% - 55,000
 - Exceeding 308,333										-	36% - 73,500
+
+---
+## TODO
+  [ ] Design front end
