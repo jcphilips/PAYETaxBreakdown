@@ -3,9 +3,9 @@ import './App.css'
 
 function App() {
   const [baseSalary, setBaseSalary] = useState(0);
-  const [salary, setSalary] = useState(null);
-  const [takeHome, setTakeHome] = useState(null);
-  const [tax, setTax] = useState(null);
+  const [salary, setSalary] = useState(0);
+  const [takeHome, setTakeHome] = useState(0);
+  const [tax, setTax] = useState(0);
 
   const handleChange = event => {
     if (event.target.id == 'baseSalary') {
@@ -73,12 +73,10 @@ function App() {
         <label htmlFor='baseSalary'>Enter base salary: </label>
         <input id='salary' type='number' min='0' value={salary} onChange={(event) => handleChange(event)}></input>
         <label htmlFor='salary'>Enter salary before deductions: </label>
-        <input id='takeHome' type='number' min='0' value={takeHome} onChange={(event) => handleChange(event)}></input>
-        <label htmlFor='takeHome'>Enter take home salary: </label>
         <button onClick={ () => {
-          calculateTax(salary);
-          calculateEpf(baseSalary);
+          calculateTakeHomeSalary(baseSalary, salary)
         }}>Click me!</button>
+        <span>Take home salary: {takeHome || '0'}</span>
       </form>
     </>
   )
