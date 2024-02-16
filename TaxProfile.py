@@ -76,10 +76,12 @@ class TaxProfile:
 
     def reverseTax(self):
         """
-        Calculates tax based on salary income after bonuses and allowances.
+        Returns tax bracket based on take home income after tax deduction.
+        This only accounts for EPF deductions and will not work if any other deductions take place
+        between.
 
         Returns:
-            int: Total PAYE tax applicable
+            (int, int): tax bracket percentage, relief for bracket
         """
         if self.salary + self.epf < 100000:
             return (0, 0)
@@ -117,6 +119,10 @@ Take home:                  {self.take_home:,.2f} ({self.take_home_pc:.1%})
         return profile
 
     def reverse(self):
+        """
+        Calculates salary before deductions.
+        Does not return anything but uses internal method calls to update state.
+        """
         self.take_home = self.salary
         (tax_percentage, relief) = self.reverseTax() 
         self.salary = (self.take_home + self.epf - relief) / (1 - tax_percentage * .01)
